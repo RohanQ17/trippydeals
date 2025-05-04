@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JetSetGo | Amazing Travel Deals</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* Navigation Bar */
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 0 5%;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0073b6;
+        }
+
+        .logo span {
+            color: #ff6b6b;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+            position: relative;
+        }
+        
+        .nav-links a {
+            font-weight: 600;
+            padding: 0.5rem 0;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #0073b6;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #0073b6;
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .hamburger {
+            display: none;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            height: 80vh;
+            overflow: hidden;
+        }
+        
+        .slides {
+            width: 300%;
+            height: 100%;
+            display: flex;
+            transition: transform 0.8s ease-in-out;
+        }
+        
+        .slide {
+            width: 33.33%;
+            height: 100%;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 10%;
+        }
+        
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+        
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+        }
+        
+        .slide-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .slide-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .cta-btn {
+            display: inline-block;
+            background-color: #ff6b6b;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        
+        .cta-btn:hover {
+            background-color: #ff5252;
+            transform: translateY(-3px);
+        }
+        
+        .slider-nav {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            z-index: 10;
+        }
+        
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            margin: 0 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .slider-dot.active {
+            background-color: #fff;
+        }
+        
+        /* Deals Section */
+        .section-heading {
+            text-align: center;
+            margin: 3rem 0;
+        }
+        
+        .section-heading h2 {
+            font-size: 2.2rem;
+            color: #333;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-heading h2::after {
+            content: '';
+            position: absolute;
+            height: 3px;
+            width: 70px;
+            background-color: #ff6b6b;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .deals-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .deal-card {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .deal-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .deal-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .deal-content {
+            padding: 20px;
+        }
+        
+        .deal-location {
+            display: flex;
+            align-items: center;
+            color: #0073b6;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        .deal-location i {
+            margin-right: 5px;
+        }
+        
+        .deal-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .deal-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #666;
+        }
+        
+        .deal-price {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ff6b6b;
+        }
+        
+        .book-btn {
+            background-color: #0073b6;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .book-btn:hover {
+            background-color: #005a8e;
+        }
+        
+        /* Why Choose Us Section */
+        .features-section {
+            background-color: #f8f9fa;
+            padding: 5rem 0;
+            margin-top: 5rem;
+        }
+        
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-box {
+            text-align: center;
+            padding: 30px 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background-color: #e1f5fe;
+            color: #0073b6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 1.8rem;
+        }
+        
+        .feature-title {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        /* Newsletter Section */
+        .newsletter-section {
+            background-color: #0073b6;
+            padding: 4rem 0;
+            color: #fff;
+            text-align: center;
+        }
+        
+        .newsletter-container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .newsletter-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .newsletter-description {
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .newsletter-input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+        }
+        
+        .newsletter-btn {
+            background-color: #ff6b6b;
+            color: #fff;
+            border: none;
+            padding: 0 25px;
+            border-radius: 0 5px 5px 0;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .newsletter-btn:hover {
+            background-color: #ff5252;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #222;
+            color: #aaa;
+            padding: 4rem 0 2rem;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-col h3 {
+            color: #fff;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 40px;
+            height: 2px;
+            background-color: #ff6b6b;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #aaa;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #fff;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            transition: background-color 0.3s;
+        }
+        
+        .facebook:hover {
+            background-color: #3b5999;
+        }
+        
+        .twitter:hover {
+            background-color: #55acee;
+        }
+        
+        .instagram:hover {
+            background-color: #e4405f;
+        }
+        
+        .pinterest:hover {
+            background-color: #bd081c;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 3rem;
+            margin-top: 3rem;
+            border-top: 1px solid #444;
+        }
+        
+        /* Media Queries */
+        @media screen and (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background-color: #fff;
+                flex-direction: column;
+                align-items: center;
+                padding-top: 40px;
+                transition: left 0.3s;
+                z-index: 999;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 1.5rem 0;
+            }
+            
+            .hamburger {
+                display: block;
+                font-size: 1.8rem;
+            }
+            
+            .slide-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .slide-content p {
+                font-size: 1rem;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .newsletter-input {
+                border-radius: 5px;
+                margin-bottom: 10px;
+            }
+            
+            .newsletter-btn {
+                border-radius: 5px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">Jet<span>Set</span>Go</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#">Home</a></li>
+                <li><a href="#deals">Deals</a></li>
+                <li><a href="#features">Why Us</a></li>
+                <li><a href="#destinations">Destinations</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">☰</div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="slides" id="slides">
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');">
+                <div class="slide-content">
+                    <h1>Discover Amazing Destinations</h1>
+                    <p>Explore the world with our exclusive travel deals and create unforgettable memories.</p>
+                    <a href="#deals" class="cta-btn">View Offers</a>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1602002418082-dd4a8d2a2d16?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80');">
+                <div class="slide-content">
+                    <h1>Luxury Beach Getaways</h1>
+                    <p>Enjoy premium beach resorts with up to 40% off on all inclusive packages.</p>
+                    <a href="#deals" class="cta-btn">Book Now</a>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1542085552-aded2f940693?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');">
+                <div class="slide-content">
+                    <h1>Adventure Awaits</h1>
+                    <p>Embark on thrilling adventures with our curated expedition packages for adventurers.</p>
+                    <a href="#deals" class="cta-btn">Explore Now</a>
+                </div>
+            </div>
+        </div>
+        <div class="slider-nav" id="sliderNav">
+            <div class="slider-dot active" data-slide="0"></div>
+            <div class="slider-dot" data-slide="1"></div>
+            <div class="slider-dot" data-slide="2"></div>
+        </div>
+    </section>
+    
+    <!-- Deals Section -->
+    <section class="deals-section" id="deals">
+        <div class="section-heading">
+            <h2>Hot Deals & Offers</h2>
+        </div>
+        <div class="deals-container">
+            <!-- Deal Card 1 -->
+            <div class="deal-card">
+                <div class="deal-image" style="background-image: url('https://images.unsplash.com/photo-1601918774946-25832a4be0d6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80');"></div>
+                <div class="deal-content">
+                    <div class="deal-location">
+                        <i>📍</i> Santorini, Greece
+                    </div>
+                    <h3 class="deal-title">Aegean Paradise Package</h3>
+                    <div class="deal-info">
+                        <span>5 Nights</span>
+                        <span>|</span>
+                        <span>Breakfast Included</span>
+                    </div>
+                    <p>Experience the stunning beauty of Santorini with our exclusive package including a sunset cruise.</p>
+                    <div class="deal-price">
+                        <div class="price">$899</div>
+                        <a href="#" class="book-btn">Book Now</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Deal Card 2 -->
+            <div class="deal-card">
+                <div class="deal-image" style="background-image: url('https://images.unsplash.com/photo-1512100356356-de1b84283e18?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1975&q=80');"></div>
+                <div class="deal-content">
+                    <div class="deal-location">
+                        <i>📍</i> Bali, Indonesia
+                    </div>
+                    <h3 class="deal-title">Tropical Island Retreat</h3>
+                    <div class="deal-info">
+                        <span>7 Nights</span>
+                        <span>|</span>
+                        <span>All Inclusive</span>
+                    </div>
+                    <p>Immerse yourself in Balinese culture with luxurious accommodations and private tours.</p>
+                    <div class="deal-price">
+                        <div class="price">$1,199</div>
+                        <a href="#" class="book-btn">Book Now</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Deal Card 3 -->
+            <div class="deal-card">
+                <div class="deal-image" style="background-image: url('https://images.unsplash.com/photo-1603565816030-6b389eeb23cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');"></div>
+                <div class="deal-content">
+                    <div class="deal-location">
+                        <i>📍</i> Tokyo, Japan
+                    </div>
+                    <h3 class="deal-title">Tokyo City Explorer</h3>
+                    <div class="deal-info">
+                        <span>6 Nights</span>
+                        <span>|</span>
+                        <span>Guided Tours</span>
+                    </div>
+                    <p>Discover the wonders of Tokyo with our guided tour package including Mt. Fuji day trip.</p>
+                    <div class="deal-price">
+                        <div class="price">$1,499</div>
+                        <a href="#" class="book-btn">Book Now</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Deal Card 4 -->
+            <div class="deal-card">
+                <div class="deal-image" style="background-image: url('https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2066&q=80');"></div>
+                <div class="deal-content">
+                    <div class="deal-location">
+                        <i>📍</i> Venice, Italy
+                    </div>
+                    <h3 class="deal-title">Romantic Venetian Escape</h3>
+                    <div class="deal-info">
+                        <span>4 Nights</span>
+                        <span>|</span>
+                        <span>Gondola Ride</span>
+                    </div>
+                    <p>Experience the romance of Venice with our luxury hotel stay and private gondola ride.</p>
+                    <div class="deal-price">
+                        <div class="price">$999</div>
+                        <a href="#" class="book-btn">Book Now</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Deal Card 5 -->
+            <div class="deal-card">
+                <div class="deal-image" style="background-image: url('https://images.unsplash.com/photo-1581351721010-8cf859cb14a4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');"></div>
+                <div class="deal-content">
+                    <div class="deal-location">
+                        <i>📍</i> Maldives
+                    </div>
+                    <h3 class="deal-title">Ultimate Overwater Villa</h3>
+                    <div class="deal-info">
+                        <span>5 Nights</span>
+                        <span>|</span>
+                        <span>Half Board</span>
+                    </div>
+                    <p>Stay in a luxurious overwater villa with crystal clear waters and amazing marine life.</p>
+                    <div class="deal-price">
+                        <div class="price">$2,299</div>
+                        <a href="#" class="book-btn">Book Now</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Deal Card 6 -->
+            <div class="deal-card">
+                <div class="deal-image" style="background-image: url('https://images.unsplash.com/photo-1505852679233-d9fd70aff56d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');"></div>
+                <div class="deal-content">
+                    <div class="deal-location">
+                        <i>📍</i> Swiss Alps
+                    </div>
+                    <h3 class="deal-title">Alpine Ski Adventure</h3>
+                    <div class="deal-info">
+                        <span>7 Nights</span>
+                        <span>|</span>
+                        <span>Ski Pass</span>
+                    </div>
+                    <p>Hit the slopes with our premium ski package including equipment rental and lessons.</p>
+                    <div class="deal-price">
+                        <div class="price">$1,799</div>
+                        <a href="#" class="book-btn">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Why Choose Us Section -->
+    <section class="features-section" id="features">
+        <div class="section-heading">
+            <h2>Why Choose Us</h2>
+        </div>
+        <div class="features-container">
+            <!-- Feature 1 -->
+            <div class="feature-box">
+                <div class="feature-icon">💰</div>
+                <h3 class="feature-title">Best Price Guarantee</h3>
+                <p>We promise the best rates with our price match policy. Found a better price? We'll match it!</p>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="feature-box">
+                <div class="feature-icon">🔒</div>
+                <h3 class="feature-title">Secure Booking</h3>
+                <p>Book with confidence using our secure payment system with fraud protection.</p>
+            </div>
+            
+            <!-- Feature 3 -->
+            <div class="feature-box">
+                <div class="feature-icon">🌎</div>
+                <h3 class="feature-title">Global Coverage</h3>
+                <p>With partners worldwide, we offer accommodation and travel services in over 190 countries.</p>
+            </div>
+            
+            <!-- Feature 4 -->
+            <div class="feature-box">
+                <div class="feature-icon">🎖️</div>
+                <h3 class="feature-title">Reward Program</h3>
+                <p>Earn points with every booking and redeem them for discounts on future trips.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="newsletter-container">
+            <h2 class="newsletter-title">Get Exclusive Deals</h2>
+            <p class="newsletter-description">Subscribe to our newsletter and receive special offers directly to your inbox.</p>
+            <form class="newsletter-form">
+                <input type="email" class="newsletter-input" placeholder="Enter your email address" required>
+                <button type="submit" class="newsletter-btn">Subscribe</button>
+            </form>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Company Info -->
+            <div class="footer-col">
+                <h3>JetSetGo</h3>
+                <p>Your trusted travel partner since 2010. We offer the best deals on flights, hotels, and vacation packages worldwide.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-icon facebook">f</a>
+                    <a href="#" class="social-icon twitter">t</a>
+                    <a href="#" class="social-icon instagram">i</a>
+                    <a href="#" class="social-icon pinterest">p</a>
+                </div>
+            </div>
+            
+            <!-- Quick Links -->
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#deals">Deals</a></li>
+                    <li><a href="#features">Why Us</a></li>
+                    <li><a href="#destinations">Destinations</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            
+            <!-- Categories -->
+            <div class="footer-col">
+                <h3>Travel Categories</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Beach Holidays</a></li>
+                    <li><a href="#">City Breaks</a></li>
+                    <li><a href="#">Adventure Travel</a></li>
+                    <li><a href="#">Luxury Retreats</a></li>
+                    <li><a href="#">Family Vacations</a></li>
+                </ul>
+            </div>
+            
+            <!-- Contact -->
+            <div class="footer-col">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li>123 Travel Street, City</li>
+                    <li>Phone: +1-234-567-8900</li>
+                    <li>Email: info@jetsetgo.com</li>
+                    <li>Hours: Mon-Fri 9:00-18:00</li>
+                </ul>
+            </div>
